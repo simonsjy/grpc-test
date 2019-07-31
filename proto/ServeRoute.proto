@@ -1,0 +1,20 @@
+syntax = "proto3"; // 指定proto版本
+package proto;     // 指定包名
+
+//定义传输过程用到的数据类型,数字代表内部成员序号
+message Name {
+    string name = 1;
+}
+message Msg1 {
+    string message = 1;
+    int64 time = 2;
+}
+message Msg2 {
+    Msg1 message = 1;
+}
+
+//定义提供的服务
+service ServeRoute{
+    rpc Serve1(Name) returns (Msg1) {}
+    rpc Serve2(Name) returns (Msg2) {}
+}
