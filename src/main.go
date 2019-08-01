@@ -25,24 +25,24 @@ func Test(c *gin.Context) {
 }
 
 func Grpc(c *gin.Context) {
-	conn, err := grpc.Dial("127.0.0.1:50052", grpc.WithInsecure())
+	conn, err := grpc.Dial("127.0.0.1:10086", grpc.WithInsecure())
 	if err != nil {
 		log.Fatalln(err)
 	}
 	rpc := pb.NewServeRouteClient(conn)
-	reqBody1 := &pb.Name{Name: "dongTech"}
-	res1, err := rpc.Serve1(context.Background(), reqBody1) //就像调用本地函数一样，通过serve1得到返回值
+	reqBody1 := &pb.Id{Id: 1}
+	res1, err := rpc.GetUser(context.Background(), reqBody1) //就像调用本地函数一样，通过serve1得到返回值
 	if err != nil {
 		log.Fatalln(err)
 	}
-	log.Println("message from serve: ", res1.Message)
+	log.Println("message from serve: ", res1.Name)
 
 	reqBody2 := &pb.Name{Name: "HaHa"}
-	res2, err := rpc.Serve2(context.Background(), reqBody2) //就像调用本地函数一样，通过serve2得到返回值
+	res2, err := rpc.GetActivity(context.Background(), reqBody2) //就像调用本地函数一样，通过serve2得到返回值
 	if err != nil {
 		log.Fatalln(err)
 	}
-	log.Println("message from serve: ", res2.Message.Message)
+	log.Println("message from serve: ", res2.Name)
 	c.String(http.StatusOK, "get grpc success,serve1:"+timeFormat(res1.Time, dateFormat))
 }
 
